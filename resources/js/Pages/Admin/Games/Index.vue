@@ -1,5 +1,10 @@
 <script setup>
 import { router } from '@inertiajs/vue3'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
+
+defineOptions({
+    layout: AdminLayout
+})
 
 defineProps({
     games: Array,
@@ -54,21 +59,31 @@ const destroyGame = (id) => {
                         </td>
 
                         <td class="p-3">
-                            <div class="flex gap-2">
+                            <div v-if="user?.role_id === 1" class="flex gap-2">
 
                                 <a
                                     :href="route('admin.games.edit', game.id)"
-                                    class="px-3 py-1 bg-orange-500  rounded"
+                                    class="px-3 py-1 bg-orange-500 rounded"
                                 >
                                     Modifier
                                 </a>
 
                                 <button
                                     @click="destroyGame(game.id)"
-                                    class="px-3 py-1 bg-red-600  rounded"
+                                    class="px-3 py-1 bg-red-600 rounded"
                                 >
                                     Supprimer
                                 </button>
+
+                            </div>
+                            <div v-else class="flex gap-2">
+
+                                <a
+                                    :href="route('gamesession.start', game)"
+                                    class="px-3 py-1 bg-orange-500 rounded"
+                                >
+                                    Commencer
+                                </a>
 
                             </div>
                         </td>

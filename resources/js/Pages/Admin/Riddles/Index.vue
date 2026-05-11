@@ -1,5 +1,10 @@
 <script setup>
 import { router } from '@inertiajs/vue3'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
+
+defineOptions({
+    layout: AdminLayout
+})
 
 defineProps({
     riddles: Array,

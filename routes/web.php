@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PlaceController;
 use App\Http\Controllers\Admin\RiddleController;
+use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -45,11 +46,55 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('games', GameController::class);
     Route::resource('places', PlaceController::class);
     Route::resource('riddles', RiddleController::class);
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Player
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Games et/ou Sessions
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/games', [GameController::class, 'index'])
+        ->name('games.index');
+
+    Route::get('/gamesession', [GameSessionController::class, 'index'])
+        ->name('gamesession.index');
+
+    Route::get('/gamesession/{game}/start', [GameSessionController::class, 'create'])
+        ->name('gamesession.start');
+
+    Route::post('/gamesession/{game}/start', [GameSessionController::class, 'store'])
+        ->name('games.storeSession');
+
+    Route::delete('/gamesession/{session}', [GameSessionController::class, 'destroy'])
+    ->name('gamesession.destroy');
+
+    Route::get('/gamesession/{session}', [GameSessionController::class, 'show'])
+        ->name('gamesession.show');
+
+
+        // Route::get('/gamesession', [GameSessionController::class, 'index'])
+    //     ->name('gamesession.index');
+
+
+
+    // Route::post('/gamesession/{session}/validate-place', [GameSessionController::class, 'validatePlace'])
+    //     ->name('gamesession.validatePlace');
 
 });
 

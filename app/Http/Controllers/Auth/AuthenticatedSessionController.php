@@ -33,7 +33,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();
+
+        if ($user->isAdmin()) {
+
+            return redirect()->route('admin.games.index');
+
+        }
+// dd('fgd');
+        return redirect()->route('gamesession.index');
     }
 
     /**
